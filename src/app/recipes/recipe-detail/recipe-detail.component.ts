@@ -10,7 +10,7 @@ import { Recipe } from '../recipe.model';
 
 
 export class RecipeDetailComponent implements OnInit {
-  @Input() recipe: Recipe =  {name: '', description: '', imageUrlPath : ''};
+  @Input() recipe: Recipe;
 
   constructor(private recipeService: RecipeService) { }
 
