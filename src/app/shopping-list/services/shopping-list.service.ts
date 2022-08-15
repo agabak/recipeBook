@@ -15,11 +15,10 @@ export class ShoppingListService {
   constructor() { }
 
   addItem(item: Ingredient) {
-    this.ingredients.push();
+    this.ingredients.push(item);
     this.ingredientChanged.emit(this.ingredients.slice());
-    console.log(this.ingredients.slice());
   }
-  
+
   getIngredients() {
     return this.ingredients.slice();
   }

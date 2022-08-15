@@ -9,8 +9,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class HeaderComponent {
   @Output('featureSelected') featureSelected = new EventEmitter<string>();
 
-    onSelect(feature:string) {
-        console.log(feature);
+  onSelectRecipe(feature:string) {
         this.featureSelected.emit(feature);
-    }  
+    } 
+    
+    onSelectShopping(feature:string) {
+        this.featureSelected.emit(feature);  
+    }
 }
