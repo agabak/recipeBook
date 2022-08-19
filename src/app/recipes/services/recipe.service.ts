@@ -10,14 +10,14 @@ export class RecipeService {
  recipeSelected = new EventEmitter<Recipe>();
 
   private recipes: Recipe[] = [
-    new Recipe('A test Recipe one', 
+    new Recipe(1,'A test Recipe one', 
     'This is a test recipe', 
     'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/2/27/0/0155221_Grilled-shrimp-on-skewers_s4x3.jpg.rend.hgtvcom.476.357.suffix/1397166029692.jpeg',
     [
        new Ingredient('Meat', 1),
        new Ingredient('Fries', 29)
     ]),
-    new Recipe('A test Recipe two',
+    new Recipe(2,'A test Recipe two',
     'This is a test recipe Nuber two', 
     'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/2/27/0/0155221_Grilled-shrimp-on-skewers_s4x3.jpg.rend.hgtvcom.476.357.suffix/1397166029692.jpeg',
     [
@@ -28,8 +28,8 @@ export class RecipeService {
   
   constructor(private shippingListService: ShoppingListService) { }
 
-  getRecipe(name:string) {
-    return this.recipes.slice().find(x => x.name === name)
+  getRecipe(id:number) {
+    return this.recipes.slice().find(x => x.id === id)
   }
 
   getRecipes() {
