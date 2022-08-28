@@ -38,4 +38,10 @@ export class ShoppingListService {
     this.ingredients[index] = item;
     this.ingredientChanged.next(this.ingredients.slice())
   }
+
+  deleteIitem(index: number) {
+     this.ingredients.splice(index,1)  
+    // splice function delete object, array.splice(x,1)  remove element from position x
+    this.ingredientChanged.next(this.ingredients.slice())
+  }
 }
