@@ -23,10 +23,14 @@ export class RecipeDetailComponent implements OnInit {
        }
     )
   }
-
+  
   addToShoppingList() {
       if(this.recipe.ingredients.length > 0)
           this.recipeService.addIngredients(this.recipe.ingredients);
+    }
+
+    onDelete(id: number) {
+      this.recipeService.deleteRecipe(id);
     }
   
 }

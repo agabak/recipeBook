@@ -1,4 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { Ingredient } from 'src/app/share/ingredient.model';
 import { ShoppingListService } from 'src/app/shopping-list/services/shopping-list.service';
 import { Recipe } from '../recipe.model';
@@ -8,6 +10,7 @@ import { Recipe } from '../recipe.model';
 })
 export class RecipeService {
  recipeSelected = new EventEmitter<Recipe>();
+ changeRecipeList = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [
     new Recipe(1,'A test Recipe one', 
@@ -38,5 +41,22 @@ export class RecipeService {
 
   addIngredients(ingredients:Ingredient[]) {
     this.shippingListService.addItems(ingredients);
+  }
+
+  addRecipe(recipe:Recipe) {
+    this.recipes.push(recipe);
+    this.changeRecipeList.next(this.recipes.slice());
+  }
+
+  updateRecipe(id:number, recipe:Recipe) {
+    this.recipes[id] = recipe;
+    this.changeRecipeList.next(this.recipes.slice());
+  }
+
+  deleteRecipe(id:number) {
+    // get the index  value
+     const index = this.recipes.findIndex((recipe) => recipe.id === id);
+    this.recipes.splice(index,1)
+    this.changeRecipeList.next(this.recipes.slice())
   }
 }

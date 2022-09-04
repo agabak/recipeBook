@@ -61,6 +61,18 @@ export class RecipeEditComponent implements OnInit {
 
   sendForm() {
     console.log(this.recipeForm.valid);
+    const recipe = new Recipe(this.id,
+      this.recipeForm.value.name,
+      this.recipeForm.value.description,
+      this.recipeForm.value.imageUrlPath, 
+      this.recipeForm.value.recipeIngredients);
+    if(this.isEditMode) {
+       this.recipeService.updateRecipe(this.id, recipe);
+    } else {
+      const newId = this.recipeService.getRecipes().length + 1;
+      recipe.id = newId;
+      this.recipeService.addRecipe(recipe);
+    }
   }
 
   get controls() { // a getter!
@@ -75,5 +87,9 @@ export class RecipeEditComponent implements OnInit {
         'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)])
       })
     )
+  }
+
+  resetForm() {
+    this.recipeForm.reset();
   }
 }
