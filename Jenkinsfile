@@ -17,7 +17,7 @@ pipeline {
 
         stage('Front end') {
           steps {
-            sh 'npm install --production && ng build --production'
+            sh 'npm install --production'
           }
         }
 
