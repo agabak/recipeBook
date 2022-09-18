@@ -17,7 +17,7 @@ pipeline {
 
         stage('Front end') {
           steps {
-            sh 'npm i'
+            sh 'npm install source-map-resolve'
           }
         }
 
