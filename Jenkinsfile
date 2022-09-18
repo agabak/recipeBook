@@ -17,7 +17,7 @@ pipeline {
 
         stage('Front end') {
           steps {
-            sh 'npm i && ng test'
+            sh 'npm install'
           }
         }
 
