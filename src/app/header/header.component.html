@@ -12,8 +12,8 @@
                 <li class="dropdown" appDropdown>
                     <a class="dropdown-toggle" rel="button">Manage <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                       <li style="cursor:pointer ;"><a>Sava Data</a></li>
-                       <li style="cursor:pointer ;"><a>Fetch Data</a></li>
+                       <li style="cursor:pointer ;" (click)="saveRecipes()"><a>Sava Data</a></li>
+                       <li style="cursor:pointer ;" (click)="onfetchRecipes()"><a>Fetch Data</a></li>
                     </ul>
                 </li>
             </ul>
