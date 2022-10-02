@@ -10,25 +10,22 @@ import { RecipeService } from "../recipes/services/recipe.service";
 })
 export class DataStorageService {
 
+  firebaseUrl = 'https://ng-recipe-book-77fd1-default-rtdb.firebaseio.com/recipes.json'
 
-    // https://ng-recipe-book-77fd1-default-rtdb.firebaseio.com/
     constructor(private http: HttpClient,
         private recipeService: RecipeService,
         private authService: AuthService) { }
 
     storeRecipe() {
         const recipes = this.recipeService.getRecipes();
-
-        this.http.put('https://ng-recipe-book-77fd1-default-rtdb.firebaseio.com/recipes.json', recipes)
+        
+        this.http.put(this.firebaseUrl, recipes)
             .subscribe(respose => console.log(respose));
     }
 
     onFetchData() {
-    return     this.authService.user.pipe(take(1), exhaustMap(user => {
-            return this.http.get('https://ng-recipe-book-77fd1-default-rtdb.firebaseio.com/recipes.json', 
-            {
-                params: new HttpParams().set('auth', user?.token)
-            })
+        return this.authService.user.pipe(take(1), exhaustMap(user => {
+            return this.http.get(this.firebaseUrl)
 
         }), map((recipes: Recipe[]) => {
             return recipes?.map(recipe => {

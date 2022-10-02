@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
 
 import { AppComponent } from './app.component';
@@ -19,6 +19,9 @@ import { RecipeHomeComponent } from './recipes/recipe-home/recipe-home.component
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { AuthCompnent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './share/loading-spinner/loading-spinner.component';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AlertComponent } from './share/alert/alert.component';
+import { PlaceholderDirective } from './share/helpers/placeholder.directive';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { LoadingSpinnerComponent } from './share/loading-spinner/loading-spinner
     RecipeHomeComponent,
     RecipeEditComponent,
     AuthCompnent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    AlertComponent,
+    PlaceholderDirective
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,7 @@ import { LoadingSpinnerComponent } from './share/loading-spinner/loading-spinner
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
 import { User } from "./user.model";
-
+ // firebase
 export interface ResponseAuthData {
     kind: string
     idToken: string	 //A Firebase Auth ID token for the newly created user.
@@ -15,12 +16,13 @@ export interface ResponseAuthData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    authUrl:string
-    signInUrl: string
+    authUrl:string;
+    signInUrl:string;
 
     user = new BehaviorSubject<User>(null);
+    private tokenExperationTimer:any;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private router: Router) { }
 
     signup(email: string, password: string) {
         return this.http.post<ResponseAuthData>(this.authUrl, {
@@ -33,6 +35,7 @@ export class AuthService {
     }
 
     signIn(email: string, password: string) {
+        const user = this.autoLogin();
         return this.http.post<ResponseAuthData>(this.signInUrl, {
             email: email,
             password: password,
@@ -42,10 +45,41 @@ export class AuthService {
         }));
     }
 
+    autoLogin() {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) return;
+        console.log();
+        const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExperationDate))
+        if(loadedUser.token) {
+            const experationDuration = new Date(userData._tokenExperationDate).getTime() - new Date().getTime();
+            this.autoLogout(experationDuration);
+            this.user.next(loadedUser);
+        }
+              
+    }
+
+    logout() {
+        this.user.next(null);
+        this.router.navigate(['/auth']);
+        localStorage.removeItem('userData');
+        if(this.tokenExperationTimer)
+             clearTimeout(this.tokenExperationTimer);
+        this.tokenExperationTimer = null
+    }
+
+    autoLogout(experationDuration: number) {
+     this.tokenExperationTimer =   setTimeout(() => {
+          this.logout();
+        }, experationDuration)
+    }
+
     private getUser(response: ResponseAuthData) {
+        const experationTimeInMillsec = +response.expiresIn * 1000;
         const user = new User(response.email, response.localId, response.idToken,
-            new Date(new Date().getTime() + +response.expiresIn * 1000))
+            new Date(new Date().getTime() + experationTimeInMillsec))
         this.user.next(user);
+        this.autoLogout(experationTimeInMillsec);
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 
     private handleError(errorResponse: HttpErrorResponse) {
