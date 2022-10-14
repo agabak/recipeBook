@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { DataStorageService } from "../share/data-storage.service";
 import { User } from "./user.model";
  // firebase
 export interface ResponseAuthData {
@@ -16,9 +17,7 @@ export interface ResponseAuthData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    authUrl:string;
-    signInUrl:string;
-
+    
     user = new BehaviorSubject<User>(null);
     private tokenExperationTimer:any;
 
