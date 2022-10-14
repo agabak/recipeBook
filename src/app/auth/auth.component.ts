@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -18,22 +18,18 @@ export class AuthCompnent {
   private compSub: Subscription;
 
   constructor(private authService: AuthService, 
-    private router: Router,
+    private router: Router, 
     private componentFactoryResover: ComponentFactoryResolver) { }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onHandleErrorClose() {
-    this.error = null
-  }
-
-
+ // onHandleErrorClose() {
+//    this.error = null
+ // }
 
   Login(Login: NgForm) {
-
-
 
     let authObs: Observable<ResponseAuthData>
     if (!Login.valid) return;
@@ -43,8 +39,7 @@ export class AuthCompnent {
       
       authObs = this.authService.signIn(Login.value.email, Login.value.password);
     } else {
-      authObs = this.authService.signup(Login.value.email, Login.value.password)
-
+      authObs = this.authService.signup(Login.value.email, Login.value.password);
     }
 
     authObs.subscribe(
